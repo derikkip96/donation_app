@@ -10,6 +10,7 @@
 - in the .env file, add database information to allow Laravel to connect to the database
 - Migrate the database
 - for the purpose of instant payment notifaction you need to turnel your application using ngrok so that you expose it to the internet
+- run on port 8000
 
 
 
