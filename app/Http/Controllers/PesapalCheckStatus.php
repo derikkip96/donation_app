@@ -22,7 +22,7 @@ class PesapalCheckStatus extends Controller
     public $signature_method;
     public $QueryPaymentStatus;
     public $QueryPaymentStatusByMerchantRef;
-    public $querypaymentdetails;
+	public $querypaymentdetails;
 
     public function __construct()
     {
@@ -31,9 +31,9 @@ class PesapalCheckStatus extends Controller
         $this->consumer_secret = config('configuration.pesapal.secret');
         $this->signature_method = new OAuthSignatureMethod_HMAC_SHA1();
         $this->consumer 		= new OAuthConsumer($this->consumer_key, $this->consumer_secret);
-        $this->QueryPaymentStatus 				= 	'https://demo.pesapal.com/API/QueryPaymentStatus';
-		$this->QueryPaymentStatusByMerchantRef	= 	'https://demo.pesapal.com/API/QueryPaymentStatusByMerchantRef';
-		$this->querypaymentdetails 				= 	'https://demo.pesapal.com/API/querypaymentdetails';
+        $this->QueryPaymentStatus 				= 	'https://www.pesapal.com/API/QueryPaymentStatus';
+		$this->QueryPaymentStatusByMerchantRef	= 	'https://www.pesapal.com/API/QueryPaymentStatusByMerchantRef';
+		$this->querypaymentdetails 				= 	'https://www.pesapal.com/API/querypaymentdetails';
 
     }
     public function checkStatusByTrackingIdandMerchantRef($MerchantReference,$TrackingId)
@@ -49,7 +49,6 @@ class PesapalCheckStatus extends Controller
 		$request_status->set_parameter("pesapal_transaction_tracking_id",$TrackingId);
 		$request_status->sign_request($this->signature_method, $this->consumer, $this->token);		
 		$status = $this->curlRequest($request_status);
-
 		return $status;
     }
     function getTransactionDetails($MerchantReference,$TrackingId)
@@ -69,8 +68,7 @@ class PesapalCheckStatus extends Controller
 		$pesapalResponseArray=array('pesapal_transaction_tracking_id'=>$pesapalResponse[0],
 				   'payment_method'=>$pesapalResponse[1],
 				   'status'=>$pesapalResponse[2],
-				   'pesapal_merchant_reference'=>$pesapalResponse[3]);
-				   
+				   'pesapal_merchant_reference'=>$pesapalResponse[3]);				   
 		return $pesapalResponseArray;
     }
     function checkStatusByMerchantRef($MerchantReference){	

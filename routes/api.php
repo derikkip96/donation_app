@@ -14,3 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('/payments/callback','Api\IpnPesaPalController@pesapalIpn')->name('ipn');
+Route::group(['middleware' => 'auth.jwt'], function() {
+    Route::get('/payments-data','TransactionController@transactionRecord');
+});

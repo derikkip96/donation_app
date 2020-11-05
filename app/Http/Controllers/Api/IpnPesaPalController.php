@@ -30,20 +30,17 @@ class IpnPesaPalController extends Controller
             $Notification = $request->get('pesapal_notification_type');
             $checkStatus 				= new PesapalCheckStatus();
 
-            if($Notification=="CHANGE" && $TrackingId!=''){
-                
-                $transactionDetails	 = $checkStatus->getTransactionDetails($MerchantReference,$TrackingId);             
 
+            if($Notification=="CHANGE" && $TrackingId!=''){                
+                $transactionDetails	 = $checkStatus->getTransactionDetails($MerchantReference,$TrackingId); 
                 $transaction = Transaction::where('reference',$transactionDetails['pesapal_merchant_reference'])->first();
                 $transaction->status=$transactionDetails['status'];
                 $transaction->paymentMethod = $transactionDetails['payment_method'];
                 $transaction->trackingId= $transactionDetails['pesapal_transaction_tracking_id'];
                 $transaction->save();
-                
                 $resp	= "pesapal_notification_type=$pesapalNotification".		
 				  "&pesapal_transaction_tracking_id=$pesapalTrackingId".
 				  "&pesapal_merchant_reference=$pesapalMerchantReference";
-				  
                 ob_start();
                 echo $resp;
                 ob_flush();

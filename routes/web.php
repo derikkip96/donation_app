@@ -13,9 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::post('/login_user','Auth\LoginController@authenticate');
 Route::post('/iframe-pay','DonationController@iframePay')->name('iframe_pay');
 Route::get('/payment-complete','DonationController@responsePage');
-Route::get('/donor','DonationController@donorFormPage');
+Route::get('/landing','DonationController@donorFormPage');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+// PESAPAL_KEY=k/m9rU23VXzbVFK7AVBS8bPkpbTFnP/k 
+// PESAPAL_SECRET=jzPZFJW8eZGkWhA5rBfVvboVVEA= 
+

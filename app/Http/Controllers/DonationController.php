@@ -17,6 +17,7 @@ use App\OAUTHS\OAuthUtil;
 use App\Models\Transaction;
 use App\Http\Controllers\PesapalCheckStatus;
 use App\User;
+use App\Models\ClientUser;
 
 
 
@@ -58,7 +59,7 @@ class DonationController extends Controller
         $reference 		= $data['reference'];
         $callback_url = url('/payment-complete');
 
-        $user_data = User::create([
+        $user_data = ClientUser::create([
             'first_name'=>	$data['first_name'],
 			'last_name'	=>	$data['last_name'],
 			'email'		=>	$data['email'],
@@ -87,8 +88,7 @@ class DonationController extends Controller
 					  	Email=\"".$email."\" 
 					  	PhoneNumber=\"".$phonenumber."\" 
 					  	xmlns=\"http://www.pesapal.com\" />";
-        $post_xml = htmlentities($post_xml);
-        
+        $post_xml = htmlentities($post_xml);        
         $iframe_src = OAuthRequest::from_consumer_and_token($consumer, $this->token, "GET", $this->iframelink, $this->params);
         $iframe_src->set_parameter("oauth_callback", $callback_url);
         $iframe_src->set_parameter("pesapal_request_data", $post_xml);
@@ -117,7 +117,8 @@ class DonationController extends Controller
 
         return view('redirect_page',compact('status','MerchantReference','TrackingId'));
     }
-    public function donorFormPage(Request $request){
+    public function donorFormPage(Request $request)
+    {
         return view('donorform');
     }
 }
